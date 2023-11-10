@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: helm-app
+  namespace: argo-cd
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: helm-ns
+  project: default
+  source:
+    repoURL: https://github.com/mabusaa/argocd-example-apps
+    path: helm-guestbook
+    targetRevision: master
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace: true
