@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: project-with-role
+  namespace: argo-cd
+spec:
+  description: "Allow all sources repo, allow local cluster and namespace ns-1 only as dest, allow all cluster and names
+  sourceRepos:
+    - '*'
+  destinations:
+    - namespace: proj-ns
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  roles:
+  - name: ci-role
+    description: Sync privileges for project with role
+    policies:
+     - p, proj:project-with-role:ci-role, applications, sync, project-with-role/*, allow
