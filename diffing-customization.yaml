@@ -1,0 +1,24 @@
+### I want my application in Sync Status even we change the replicas field to 5 argo cd will ignore the changes
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: diffing-customization
+  namespace: argo-cd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mabusaa/argocd-example-apps.git
+    targetRevision: master
+    path: guestbook-with-sub-directories
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: diffing-customization-ns
+  syncPolicy:
+    automated: {}
+    syncOptions:
+    - CreateNamespace=true
+    ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers: 
+      - /spec/replicas
